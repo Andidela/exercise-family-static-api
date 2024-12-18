@@ -49,8 +49,27 @@ def add_one_member():
     except Exception as error:
         return jsonify({"error":"Error de Servidor", "msg":str(error)}), 500
 
+@app.route('/member/<int:id>', methods=['DELETE'])
+def delete_one_member(id):
+    try: 
+        member=jackson_family.delete_member(id)
+        if member["done"]:
+            return jsonify({"done":True}), 200
+        return jsonify({"msg":"Miembro no encontrado"}), 400
+    except Exception as error:
+        return jsonify({"error":"Error de Servidor", "msg":str(error)}), 500
 
-    return jsonify(response_body), 200
+@app.route('/member/<int:id>', methods=['GET'])
+def get_one_member(id):
+    try: 
+        member=jackson_family.get_member(id)
+        if member:
+            return jsonify(member), 200
+        return jsonify({"msg":"Miembro no encontrado"}), 400
+    except Exception as error:
+        return jsonify({"error":"Error de Servidor", "msg":str(error)}), 500
+
+
 
 # this only runs if `$ python src/app.py` is executed
 if __name__ == '__main__':
